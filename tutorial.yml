@@ -2,57 +2,57 @@
 - hosts: localhost
   gather_facts: False
   vars_files:
-      - vars/azure.yml
+    - vars/azure.yml
   tasks:
 
   - name: "Create an Affinity Group"
-    azure_affinity_group: >
-       subscription_id="{{ subscription_id }}"
-       certificate_path="{{ certificate_path }}"
-       state='present'
-       name="{{ affinity_group_name }}"
-       label="{{ affinity_group_label }}"
-       location="{{ affinity_group_location }}"
-       desc="{{ affinity_group_desc }}"
+    azure_affinity_group:
+      subscription_id: "{{ subscription_id }}"
+      certificate_path: "{{ certificate_path }}"
+      state: 'present'
+      name: "{{ affinity_group_name }}"
+      label: "{{ affinity_group_label }}"
+      location: "{{ affinity_group_location }}"
+      desc: "{{ affinity_group_desc }}"
     register: affinity_group
-       
+
   - name: "Create a Storage Account"
-    azure_storage_account: >
-       subscription_id="{{ subscription_id }}"
-       certificate_path="{{ certificate_path }}"
-       state=present
-       name="{{ storage_account_name }}"
-       affinity_group={{ affinity_group.name }}
-       container_name="{{ storage_account_container_name }}"
-       label="{{ storage_account_label }}"
-       desc="{{ storage_account_desc }}"
+    azure_storage_account:
+       subscription_id: "{{ subscription_id }}"
+       certificate_path: "{{ certificate_path }}"
+       state: present
+       name: "{{ storage_account_name }}"
+       affinity_group: "{{ affinity_group.name }}"
+       container_name: "{{ storage_account_container_name }}"
+       label: "{{ storage_account_label }}"
+       desc: "{{ storage_account_desc }}"
     register: storage_account
 
   - name: "Create an Hosted Service"
-    azure_hosted_service: >
-       subscription_id="{{ subscription_id }}"
-       certificate_path="{{ certificate_path }}"
-       state=present
-       name="{{ hosted_service_name }}"
-       affinity_group={{ affinity_group.name }}
-       label="{{ hosted_service_label }}"
-       desc="{{ hosted_service_desc }}"
+    azure_hosted_service:
+       subscription_id: "{{ subscription_id }}"
+       certificate_path: "{{ certificate_path }}"
+       state: "present"
+       name: "{{ hosted_service_name }}"
+       affinity_group: "{{ affinity_group.name }}"
+       label: "{{ hosted_service_label }}"
+       desc: "{{ hosted_service_desc }}"
     register: hosted_service
 
   - name: "Create a VM"
-    azure_vm: >
-       subscription_id='{{ subscription_id }}'
-       certificate_path='{{ certificate_path }}'
-       state=present
-       vm_name='{{ vm_name }}'
-       image_name='{{ image_name }}'
-       sshcert='{{ sshcert }}'
-       fingerprint='{{ fingerprint }}'
-       username='{{ username }}'
-       password='{{ password }}'
-       affinity_group='{{ affinity_group.name }}'
-       service_name='{{ storage_account.name }}'
-       hosted_service_name='{{ hosted_service.name }}'
-       virtual_network_name='{{ virtual_network_name }}'
-       subnet_name='{{ subnet_name }}'
+    azure_vm:
+       subscription_id: '{{ subscription_id }}'
+       certificate_path: '{{ certificate_path }}'
+       state: present
+       vm_name: '{{ vm_name }}'
+       image_name: '{{ image_name }}'
+       sshcert: '{{ sshcert }}'
+       fingerprint: '{{ fingerprint }}'
+       username: '{{ username }}'
+       password: '{{ password }}'
+       affinity_group: '{{ affinity_group.name }}'
+       service_name: '{{ storage_account.name }}'
+       hosted_service_name: '{{ hosted_service.name }}'
+       virtual_network_name: '{{ virtual_network_name }}'
+       subnet_name: '{{ subnet_name }}'
     register: vm

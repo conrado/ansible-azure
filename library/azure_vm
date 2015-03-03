@@ -51,11 +51,6 @@ except ImportError:
     print "failed=True msg='azure required for this module'"
     sys.exit(1)
 
-lib_path = os.path.abspath('/Users/hleclerc/dev/AZURE/ANSIBLE/lib/')
-sys.path.append(lib_path)
-
-from dumpObj import *
-
 
 def register_sshcert(sshcert, hosted_service_name, sms):
     with open(sshcert, 'r') as content_file:
